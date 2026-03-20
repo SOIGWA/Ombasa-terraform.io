@@ -224,4 +224,3 @@ If you are following along, don't be discouraged by errors. They are just Terraf
 
 Thanks for reading. Happy scripting\!
 
-*(Optional Footer: You can see the full code and contribute on my GitHub repository.)*
