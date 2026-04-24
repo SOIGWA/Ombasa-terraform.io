@@ -13,24 +13,32 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout Code
+        uses: actions/checkout@v4
 
-      - uses: hashicorp/setup-terraform@v3
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v3
         with:
           terraform_version: "1.6.0"
           terraform_wrapper: false
 
       - name: Terraform Init
-        run: terraform init -upgrade
+        # This step manually clears stale provider metadata to resolve GPG expiry errors
+        run: |
+          rm -rf .terraform/
+          rm -rf .terraform.lock.hcl
+          terraform init -upgrade
         working-directory: modules/services/webserver-cluster
 
       - name: Run Unit Tests
+        # Executes the .tftest.hcl files to validate module logic
         run: terraform test
         working-directory: modules/services/webserver-cluster
 
   integration-tests:
     name: Integration Tests
     runs-on: ubuntu-latest
+    # Only runs on direct pushes to main after unit tests pass
     if: github.event_name == 'push'
     needs: unit-tests
 
@@ -40,13 +48,16 @@ jobs:
       AWS_DEFAULT_REGION:    us-west-2
 
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout Code
+        uses: actions/checkout@v4
 
-      - uses: actions/setup-go@v4
+      - name: Setup Go
+        uses: actions/setup-go@v4
         with:
-          go-version: "1.26"
+          go-version: "1.22"
           cache: true
 
       - name: Run Integration Tests
+        # Runs the Terratest suite located in the test/ directory
         run: go test -v -timeout 30m ./...
         working-directory: test
