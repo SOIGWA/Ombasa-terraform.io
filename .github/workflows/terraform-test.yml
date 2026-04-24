@@ -12,7 +12,6 @@ jobs:
     name: Unit Tests
     runs-on: ubuntu-latest
     
-    # Notice how this is indented to match 'runs-on'
     env:
       AWS_ACCESS_KEY_ID:     ${{ secrets.AWS_ACCESS_KEY_ID }}
       AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
@@ -28,26 +27,29 @@ jobs:
           terraform_version: "latest"
           terraform_wrapper: false
 
+      - name: Terraform Format Check
+        # Phase 3: Enforce clean code standards
+        run: terraform fmt -check -recursive
+
       - name: Terraform Init
         run: |
-          # 1. Force the runner to forget all cached provider metadata
           rm -rf .terraform/
           rm -f .terraform.lock.hcl
-          
-          # 2. Tell the OS to ignore the expired key temporarily so it can download the new one
-          # 3. Use -upgrade to pull the newest version (v5.100.1+) which has the fixed keys
           terraform init -upgrade -input=false
         working-directory: modules/services/webserver-cluster
 
+      - name: Terraform Validate
+        # Phase 3: Ensure syntax and variables are correct
+        run: terraform validate
+        working-directory: modules/services/webserver-cluster
+
       - name: Run Unit Tests
-        # Executes the .tftest.hcl files to validate module logic
         run: terraform test
         working-directory: modules/services/webserver-cluster
 
   integration-tests:
     name: Integration Tests
     runs-on: ubuntu-latest
-    # Only runs on direct pushes to main after unit tests pass
     if: github.event_name == 'push'
     needs: unit-tests
 
