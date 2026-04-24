@@ -1,5 +1,5 @@
 variables {
-  cluster_name  = "ombasa-cluster" 
+  cluster_name  = "ombasa-cluster"
   instance_type = "t2.micro"
   min_size      = 2
   max_size      = 10
@@ -28,7 +28,7 @@ run "validate_security_group_port" {
   command = plan
 
   assert {
-    condition     = anytrue([
+    condition = anytrue([
       for ingress in aws_security_group.app_sg.ingress : ingress.from_port == 80
     ])
     error_message = "Security group must allow traffic on port 80"
