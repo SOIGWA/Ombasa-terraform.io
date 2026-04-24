@@ -17,7 +17,7 @@ func TestFullStackEndToEnd(t *testing.T) {
 	uniqueID := strings.ToLower(random.UniqueId())
 
 	appOptions := &terraform.Options{
-		TerraformDir:    "github.com/SOIGWA/Ombasa-terraform.io//modules/services/webserver-cluster?ref=feature/phase3-automation",
+		TerraformDir:    "../modules/services/webserver-cluster",
 		TerraformBinary: "terraform",
 		Vars: map[string]interface{}{
 			"cluster_name":       fmt.Sprintf("test-app-%s", uniqueID),
