@@ -58,7 +58,6 @@ resource "aws_lb_listener" "http" {
 resource "aws_lb_listener_rule" "blue_green" {
   listener_arn = aws_lb_listener.http.arn
   priority     = 100
-
   action {
     type             = "forward"
     target_group_arn = var.active_environment == "blue" ? aws_lb_target_group.blue.arn : aws_lb_target_group.green.arn
