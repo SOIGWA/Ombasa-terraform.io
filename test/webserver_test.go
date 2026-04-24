@@ -18,6 +18,7 @@ func TestFullStackEndToEnd(t *testing.T) {
 
 	appOptions := &terraform.Options{
 		TerraformDir: "../modules/services/webserver-cluster",
+		TerraformBinary: "terraform",
 		Vars: map[string]interface{}{
 			"cluster_name":       fmt.Sprintf("test-app-%s", uniqueID),
 			"vpc_name":           fmt.Sprintf("test-vpc-%s", uniqueID),
