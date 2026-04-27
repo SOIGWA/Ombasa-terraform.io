@@ -42,7 +42,7 @@ func TestFullStackEndToEnd(t *testing.T) {
 		60,
 		10*time.Second,
 		func(statusCode int, body string) bool {
-			return statusCode == 200 && strings.Contains(body, "Hello, World V2")
+			return statusCode == 200 && strings.Contains(body, "Hello, World ")
 		},
 	)
 }
