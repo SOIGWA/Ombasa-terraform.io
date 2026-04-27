@@ -11,7 +11,7 @@ done
 apt-get install -y nginx
 
 cat > /var/www/html/index.html <<HTML
-<h1>Hello, World V2</h1>
+<h1>Hello, World V3</h1>
 <p>The database is located at: <b>${db_address}</b></p>
 <p>The database is listening on port: <b>${db_port}</b></p>
 HTML
