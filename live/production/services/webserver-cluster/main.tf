@@ -2,7 +2,7 @@ provider "aws" {
   region = "us-west-2"
 }
 module "webserver_cluster" {
-  source = "github.com/SOIGWA/Ombasa-terraform.io//modules/services/webserver-cluster?ref=v0.0.2"
+  source = "github.com/SOIGWA/Ombasa-terraform.io//modules/services/webserver-cluster?ref=main"
 
   cluster_name       = "ombasa-cluster-prod"
   environment        = "production"
